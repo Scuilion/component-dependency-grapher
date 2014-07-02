@@ -50,41 +50,23 @@ public class DependencyGrapher{
         {
             //Label languageLabel = DynamicLabel.label("java");
             //Label scopeLabel = DynamicLabel.label("internal");
+            //
+            Artifact artifactOne = new Artifact
+                .ArtifactBuilder("jar1", "com.scuilion.product.featureone")
+                .type("internal")
+                .language("groovy")
+                .build();
+             Artifact artifactTwo = new Artifact
+                .ArtifactBuilder("jarX", "com.scuilion.product.feature.c")
+                .type("internal")
+                .language("java")
+                .build();
+              Artifact artifactThree = new Artifact
+                .ArtifactBuilder("three", "org.thridparty.some.other.thing")
+                .type("external")
+                .language("scala")
+                .build();
 
-            HashMap<String, Object> setupInfo = new HashMap<>();
-            setupInfo.put("artifactName", "jar1");
-            setupInfo.put("identifier", "com.scuilion.jarJ");
-            setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            //firstNode = Creator.createNode(graphDb, setupInfo);
- 
-            //firstNode = graphDb.createNode();
-            //firstNode.setProperty( "artifactName", "JarX" );
-            //firstNode.setProperty( "identifier", "com.scuilion.product.feature.c" );
-            //firstNode.addLabel(languageLabel);
-            //firstNode.addLabel(scopeLabel);
-
-            //HashMap<String, Object> setupInfo = new HashMap<>();
-            setupInfo.put("artifactName", "jar2");
-            setupInfo.put("identifier", "com.scuilion.jarK");
-            setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            //secondNode = Creator.createNode(graphDb, setupInfo);
-
-            //secondNode = graphDb.createNode();
-            //secondNode.setProperty( "artifactName", "JarY" );
-            //secondNode.setProperty( "identifier", "com.scuilion.product.service.b" );
-            //secondNode.addLabel(languageLabel);
-            //secondNode.addLabel(scopeLabel);
-
-            //thirdNode = graphDb.createNode();
-            //thirdNode.setProperty( "artifactName", "JarZ" );
-            //thirdNode.setProperty( "identifier", "com.scuilion.provides.api.c" );
-            //thirdNode.addLabel(languageLabel);
-            //thirdNode.addLabel(scopeLabel);
-
-            setupInfo.put("artifactName", "jar3");
-            setupInfo.put("identifier", "com.scuilion.jarI");
-            setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            //thirdNode = Creator.createNode(graphDb, setupInfo);
             /*{ "jar3":{
                 identifier:"com.scuilion.jarI",
                 language:"groovy",
@@ -96,22 +78,11 @@ public class DependencyGrapher{
                 becauseOf:["com.scuilion.provides.api.c.Method1","com.scuilion.provides.api.c.Method2"]
             }*/
 
-            relationship = secondNode.createRelationshipTo( thirdNode, RelTypes.DEPENDS_ON );
-            relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method1" );
-            relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method2" );
+            //relationship = secondNode.createRelationshipTo( thirdNode, RelTypes.DEPENDS_ON );
+            //relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method1" );
+            //relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method2" );
             // END SNIPPET: addData
 
-            // START SNIPPET: readData
-            System.out.print( firstNode.getProperty( "artifactName" ) );
-            System.out.print( relationship.getProperty( "becauseOf" ) );
-            System.out.print( secondNode.getProperty( "artifactName" ) );
-            // END SNIPPET: readData
-
-            greeting = ( (String) firstNode.getProperty( "artifactName" ) )
-                       + ( (String) relationship.getProperty( "becauseOf" ) )
-                       + ( (String) secondNode.getProperty( "artifactName" ) );
-
-            // START SNIPPET: transaction
             tx.success();
         }catch(Exception e){
             System.out.println("exception thrown" + e.toString());
