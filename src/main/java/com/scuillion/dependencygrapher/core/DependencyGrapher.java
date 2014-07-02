@@ -85,7 +85,7 @@ public class DependencyGrapher{
             setupInfo.put("identifier", "com.scuilion.jarI");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
             //thirdNode = Creator.createNode(graphDb, setupInfo);
-            { "jar3":{
+            /*{ "jar3":{
                 identifier:"com.scuilion.jarI",
                 language:"groovy",
                 type:"internal"
@@ -94,7 +94,7 @@ public class DependencyGrapher{
             { "jar3":{
                 dependsOn:["jar2"],
                 becauseOf:["com.scuilion.provides.api.c.Method1","com.scuilion.provides.api.c.Method2"]
-            }
+            }*/
 
             relationship = secondNode.createRelationshipTo( thirdNode, RelTypes.DEPENDS_ON );
             relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method1" );
