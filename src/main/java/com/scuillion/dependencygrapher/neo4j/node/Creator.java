@@ -10,7 +10,8 @@ import java.util.HashMap;
 
 public class Creator{
 
-    static public Node nodeCreator(GraphDatabaseService graphDb , HashMap<String, Object> setupInfo){
+    @SuppressWarnings("unchecked")
+    static public Node createNode(GraphDatabaseService graphDb , HashMap<String, Object> setupInfo){
         Node node = graphDb.createNode();
         node.setProperty("artifactName", setupInfo.get("artifactName"));
         node.setProperty("identifier", setupInfo.get("identifier"));

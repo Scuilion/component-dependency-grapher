@@ -1,0 +1,33 @@
+DependencyGrapher{
+    addArtifact(name, definition, relationships)
+}
+
+ArtifactList{
+    addArtifactByName
+    addArtifactDefinitions(String artifactName, Stringdefinitions)
+    addArtifactRelationship
+    
+    private ValidateDefinitionDoesNotExist
+}
+
+Artifact{
+    BiSet<String artifactName, String artifactDefinition> artifact = BiSet<>()
+    List<String> relationships
+        addRelationship
+}
+
+
+node.Creator{
+    createNode(node, hashmap)
+}
+
+node.labels.Language{
+    JAVA,
+    GROOVY
+}
+
+node.labels.Scope{
+    INTERNAL,
+    EXTERNAL
+}
+

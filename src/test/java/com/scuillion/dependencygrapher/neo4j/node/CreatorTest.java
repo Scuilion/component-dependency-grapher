@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
 import java.util.HashMap;
-
 import java.util.Arrays;
 
 import org.neo4j.graphdb.DynamicLabel;
@@ -38,7 +37,7 @@ public class CreatorTest {
             setupInfo.put("identifier", "com.scuilion");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
             
-            creatorNode = Creator.nodeCreator(graphDb, setupInfo);
+            creatorNode = Creator.createNode(graphDb, setupInfo);
             tx.success();
         }
     }
