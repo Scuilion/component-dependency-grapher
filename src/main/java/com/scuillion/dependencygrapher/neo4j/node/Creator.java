@@ -10,6 +10,12 @@ import java.util.HashMap;
 
 public class Creator{
 
+    static public void createMultipleNodes(GraphDatabaseService graphDb , List<HashMap<String, Object>> nodes){
+        for(HashMap<String, Object> node : nodes){
+            createNode(graphDb, node);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     static public Node createNode(GraphDatabaseService graphDb , HashMap<String, Object> setupInfo){
         Node node = graphDb.createNode();

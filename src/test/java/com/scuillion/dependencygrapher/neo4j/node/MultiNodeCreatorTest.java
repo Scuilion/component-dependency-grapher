@@ -9,6 +9,8 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Arrays;
 
@@ -17,8 +19,10 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.index.IndexManager;
+import org.neo4j.graphdb.index.Index;
 
-public class CreatorTest {
+public class MultiNodeCreatorTest {
 
     static protected GraphDatabaseService graphDb;
     static Node creatorNode = null;
@@ -28,43 +32,35 @@ public class CreatorTest {
     {
         graphDb = new TestGraphDatabaseFactory().newImpermanentDatabase();
         try ( Transaction tx = graphDb.beginTx() ) {
+            List<HashMap<String, Object>> nodes = new ArrayList<>();
+
             HashMap<String, Object> setupInfo = new HashMap<>();
             setupInfo.put("artifactName", "jarA");
             setupInfo.put("identifier", "com.scuilion");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
+
+            nodes.add(setupInfo);
             
-            creatorNode = Creator.createNode(graphDb, setupInfo);
+            setupInfo.put("artifactName", "jarA");
+            setupInfo.put("identifier", "com.scuilion");
+            setupInfo.put("lables", Arrays.asList("groovy", "internal"));
+            
+            nodes.add(setupInfo);
+
+            Creator.createMultipleNodes(graphDb, nodes);
             tx.success();
         }
     }
 
-    @Test 
-    public void testNodeCreator() {
-        assertThat(creatorNode.getId(), is(greaterThan(-1L)));
-    }
 
-    @Test 
-    public void testForNodeProperties() {
-        
+    @Test public void multipleNodesFoundInDb(){
         try ( Transaction tx = graphDb.beginTx() ) {
-            Node foundNode = graphDb.getNodeById( creatorNode.getId() );
-            assertThat( foundNode.getId(), is( creatorNode.getId() ) );
-            assertThat( (String) foundNode.getProperty( "artifactName" ), is( "jarA" ) );
+            IndexManager index = graphDb.index();
+            Index<Node> artifact = index.forNodes("artifactName");
+            /*for(Node node : artifact){
+                System.out.println(node.getId());
+            }*/
         }
-    }
-
-    @Test 
-    public void testForNodeLabels() {
-        try ( Transaction tx = graphDb.beginTx() ) {
-            Node foundNode = graphDb.getNodeById( creatorNode.getId() );
-            assertTrue(foundNode.hasLabel(DynamicLabel.label("groovy")));
-            assertTrue(foundNode.hasLabel(DynamicLabel.label("internal")));
-        }
-    }
-
-    @AfterClass
-    static public void destroyTestDatabase()
-    {
-        graphDb.shutdown();
+        assertTrue(true);
     }
 }

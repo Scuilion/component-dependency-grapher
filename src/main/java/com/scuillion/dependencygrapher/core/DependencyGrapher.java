@@ -55,7 +55,7 @@ public class DependencyGrapher{
             setupInfo.put("artifactName", "jar1");
             setupInfo.put("identifier", "com.scuilion.jarJ");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            firstNode = Creator.createNode(graphDb, setupInfo);
+            //firstNode = Creator.createNode(graphDb, setupInfo);
  
             //firstNode = graphDb.createNode();
             //firstNode.setProperty( "artifactName", "JarX" );
@@ -67,7 +67,7 @@ public class DependencyGrapher{
             setupInfo.put("artifactName", "jar2");
             setupInfo.put("identifier", "com.scuilion.jarK");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            secondNode = Creator.createNode(graphDb, setupInfo);
+            //secondNode = Creator.createNode(graphDb, setupInfo);
 
             //secondNode = graphDb.createNode();
             //secondNode.setProperty( "artifactName", "JarY" );
@@ -84,7 +84,17 @@ public class DependencyGrapher{
             setupInfo.put("artifactName", "jar3");
             setupInfo.put("identifier", "com.scuilion.jarI");
             setupInfo.put("lables", Arrays.asList("groovy", "internal"));
-            thirdNode = Creator.createNode(graphDb, setupInfo);
+            //thirdNode = Creator.createNode(graphDb, setupInfo);
+            { "jar3":{
+                identifier:"com.scuilion.jarI",
+                language:"groovy",
+                type:"internal"
+                }
+            }
+            { "jar3":{
+                dependsOn:["jar2"],
+                becauseOf:["com.scuilion.provides.api.c.Method1","com.scuilion.provides.api.c.Method2"]
+            }
 
             relationship = secondNode.createRelationshipTo( thirdNode, RelTypes.DEPENDS_ON );
             relationship.setProperty( "becauseOf", "com.scuilion.provides.api.c.Method1" );
