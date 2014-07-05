@@ -23,9 +23,6 @@ public class DependencyGrapher{
     private static final String DB_PATH = "build/data/neo4j-hello.db";
 
     GraphDatabaseService graphDb;
-    Node firstNode;
-    Node secondNode;
-    Node thirdNode;
     Relationship relationship; 
 
     public String greeting;
@@ -37,7 +34,7 @@ public class DependencyGrapher{
         return true;
     }
 
-    void createDb()
+    void createDb()//Artifacts artifacts)
     {
         //deleteFileOrDirectory( new File( DB_PATH ) );
         // START SNIPPET: startDb
@@ -90,21 +87,6 @@ public class DependencyGrapher{
         // END SNIPPET: transaction
     }
 
-
-    void removeData()
-    {
-        try ( Transaction tx = graphDb.beginTx() )
-        {
-            // START SNIPPET: removingData
-            // let's remove the data
-            firstNode.getSingleRelationship( RelTypes.DEPENDS_ON, Direction.OUTGOING ).delete();
-            firstNode.delete();
-            secondNode.delete();
-            // END SNIPPET: removingData
-
-            tx.success();
-        }
-    }
 
     void shutDown()
     {
