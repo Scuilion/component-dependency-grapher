@@ -2,8 +2,6 @@ package com.scuilion.dependencygrapher.core;
 
 import com.scuilion.dependencygrapher.neo4j.node.Creator;
 
-import java.io.File;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -19,30 +17,35 @@ import java.util.HashMap;
 
 public class DependencyGrapher{
 
-    //private static final String DB_PATH = "/home/kevino/projects/data/neo4j-hello.db";
-    private static final String DB_PATH = "build/data/neo4j-hello.db";
-
     GraphDatabaseService graphDb;
-    Relationship relationship; 
 
-    public String greeting;
+    private static String DB_PATH;
+    //private static final String DB_PATH = "build/data/neo4j-hello.db";
+    
+    public DependencyGrapher(String dbPath){
+        DB_PATH = dbPath;
+        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
+        registerShutdownHook( graphDb );
+    }
 
-    public boolean someLibraryMethod() {
-        createDb();
-        //removeData();
-        shutDown();
-        return true;
+    public void store(Artifacts artifacts){
+        try ( Transaction tx = graphDb.beginTx() ) {
+            for(Artifact artifact : artifacts.getArtifacts().values()){
+                Node node = graphDb.createNode();
+                node.setProperty("artifactName", artifact.getArtifactName());
+                node.setProperty("identifier", artifact.getIdentifier());
+                node.setProperty("language", artifact.getLanguage());
+                node.setProperty("type", artifact.getType());
+            }
+            tx.success();
+        }catch(Exception e){
+            System.out.println("exception thrown" + e.toString());
+        }
+    
     }
 
     void createDb()//Artifacts artifacts)
     {
-        //deleteFileOrDirectory( new File( DB_PATH ) );
-        // START SNIPPET: startDb
-        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
-        registerShutdownHook( graphDb );
-        // END SNIPPET: startDb
-
-        // START SNIPPET: transaction
         try ( Transaction tx = graphDb.beginTx() )
         {
             //Label languageLabel = DynamicLabel.label("java");
@@ -90,12 +93,9 @@ public class DependencyGrapher{
 
     void shutDown()
     {
-        System.out.println();
-        System.out.println( "Shutting down database ..." );
-        // START SNIPPET: shutdownServer
         graphDb.shutdown();
-        // END SNIPPET: shutdownServer
     }
+
     private static void registerShutdownHook( final GraphDatabaseService graphDb )
     {
         Runtime.getRuntime().addShutdownHook( new Thread()
@@ -106,21 +106,6 @@ public class DependencyGrapher{
                 graphDb.shutdown();
             }
         } );
-    }
-
-    private static void deleteFileOrDirectory( File file )
-    {
-        if ( file.exists() )
-        {
-            if ( file.isDirectory() )
-            {
-                for ( File child : file.listFiles() )
-                {
-                    deleteFileOrDirectory( child );
-                }
-            }
-            file.delete();
-        }
     }
 
 }
