@@ -1,11 +1,12 @@
 package com.scuilion.dependencygrapher.core;
 
 import com.scuilion.dependencygrapher.neo4j.node.Creator;
+import com.scuilion.dependencygrapher.core.Utils;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.DynamicLabel;
@@ -18,11 +19,11 @@ import java.util.HashMap;
 public class DependencyGrapher{
 
     GraphDatabaseService graphDb;
-
     private static String DB_PATH;
     //private static final String DB_PATH = "build/data/neo4j-hello.db";
     
     public DependencyGrapher(String dbPath){
+    
         DB_PATH = dbPath;
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
         registerShutdownHook( graphDb );

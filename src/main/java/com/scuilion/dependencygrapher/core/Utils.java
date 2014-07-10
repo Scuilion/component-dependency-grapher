@@ -4,7 +4,6 @@ import java.io.File;
 
 public class Utils{
 
-    
     public static void deleteFileOrDirectory(String file) {
         deleteFileOrDirectory(new File(file));
     }
