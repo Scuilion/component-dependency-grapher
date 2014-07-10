@@ -54,13 +54,13 @@ public class BasicUsageTest{
 
         dependencyGrapher.store(artifacts);
 
-        ResourceIterable<String> propertyKeys;
+         propertyKeys;
         try ( Transaction tx = graphDb.beginTx() ) {
-            propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
-        }
+         ResourceIterable<String>propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
         
-        for ( String propertyKey : propertyKeys ) {
-            System.out.println(propertyKey);
+            for ( String propertyKey : propertyKeys ) {
+                System.out.println(propertyKey);
+            }
         }
 
         //Node foundNode = graphDb.getNodeById( n.getId() );
