@@ -10,20 +10,23 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.tooling.GlobalGraphOperations;
+import org.neo4j.graphdb.Transaction;
 
 import com.scuilion.dependencygrapher.core.Utils;
 
 public class BasicUsageTest{
 
-    private static final String DB_PATH = "build/data/basic-usage.db";
+    //private static final String DB_PATH = "build/data/basic-usage.db";
+    private static final String DB_PATH = "C:/Users/kevin.oneal/projects/component-dependency-grapher/build/data/basic-usage.db";
     static DependencyGrapher dependencyGrapher;
     static GraphDatabaseService graphDb;
 
     @BeforeClass
     public static void setUpDb(){
-        //Utils.deleteFileOrDirectory(DB_PATH);
-        dependencyGrapher = new DependencyGrapher(DB_PATH);
+        Utils.deleteFileOrDirectory(DB_PATH);
+        //dependencyGrapher = new DependencyGrapher(DB_PATH);
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
+        dependencyGrapher = new DependencyGrapher(graphDb);
     }
 
     @Test
@@ -51,7 +54,10 @@ public class BasicUsageTest{
 
         dependencyGrapher.store(artifacts);
 
-        ResourceIterable<String> propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
+        ResourceIterable<String> propertyKeys;
+        try ( Transaction tx = graphDb.beginTx() ) {
+            propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
+        }
         
         for ( String propertyKey : propertyKeys ) {
             System.out.println(propertyKey);

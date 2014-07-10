@@ -19,13 +19,13 @@ import java.util.HashMap;
 public class DependencyGrapher{
 
     GraphDatabaseService graphDb;
-    private static String DB_PATH;
-    //private static final String DB_PATH = "build/data/neo4j-hello.db";
-    
+
+    public DependencyGrapher(GraphDatabaseService graphDatabaseService){
+        graphDb = graphDatabaseService; 
+    }
+
     public DependencyGrapher(String dbPath){
-    
-        DB_PATH = dbPath;
-        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
+        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(dbPath);
         registerShutdownHook( graphDb );
     }
 
