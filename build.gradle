@@ -43,4 +43,9 @@ sourceSets {
 task functionalTest(type:Test){
     testClassesDir = sourceSets.functional.output.classesDir
     classpath = sourceSets.functional.runtimeClasspath + sourceSets.main.output + configurations.functionalTestCompile + sourceSets.test.output
+
+    getReports().getHtml().setDestination(new File("$project.reporting.baseDir", 'functional'))
+    getReports().getJunitXml().setDestination(new File("$project.buildDir", 'functional-results')) 
+
+
 }

@@ -7,24 +7,23 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.tooling.GlobalGraphOperations;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.Node;
 
 import com.scuilion.dependencygrapher.core.Utils;
 
 public class BasicUsageTest{
 
-    //private static final String DB_PATH = "build/data/basic-usage.db";
-    private static final String DB_PATH = "C:/Users/kevin.oneal/projects/component-dependency-grapher/build/data/basic-usage.db";
+    private static final String DB_PATH = "build/data/basic-usage.db";
     static DependencyGrapher dependencyGrapher;
     static GraphDatabaseService graphDb;
 
     @BeforeClass
     public static void setUpDb(){
         Utils.deleteFileOrDirectory(DB_PATH);
-        //dependencyGrapher = new DependencyGrapher(DB_PATH);
         graphDb = new GraphDatabaseFactory().newEmbeddedDatabase( DB_PATH );
         dependencyGrapher = new DependencyGrapher(graphDb);
     }
@@ -54,17 +53,21 @@ public class BasicUsageTest{
 
         dependencyGrapher.store(artifacts);
 
-         propertyKeys;
         try ( Transaction tx = graphDb.beginTx() ) {
-         ResourceIterable<String>propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
+            ResourceIterable<String> propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
         
             for ( String propertyKey : propertyKeys ) {
                 System.out.println(propertyKey);
             }
+            Iterable<Node> nodes = GlobalGraphOperations.at(graphDb).getAllNodes();
+
+            for ( Node node : nodes ) {
+                System.out.println(node.getProperty("artifactName"));
+            }
         }
 
         //Node foundNode = graphDb.getNodeById( n.getId() );
-       // assertThat( foundNode.getId(), is( n.getId() ) );
+        //assertThat( foundNode.getId(), is( n.getId() ) );
 
         assertTrue(true);
     }
