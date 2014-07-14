@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterable;
+import org.neo4j.tooling.GlobalGraphOperations;
 
 public class CreatorTest {
 
@@ -59,6 +62,18 @@ public class CreatorTest {
             Node foundNode = graphDb.getNodeById( creatorNode.getId() );
             assertTrue(foundNode.hasLabel(DynamicLabel.label("groovy")));
             assertTrue(foundNode.hasLabel(DynamicLabel.label("internal")));
+        }
+    }
+
+    @Test 
+    public void testAllPropertiesCreated() {
+        try ( Transaction tx = graphDb.beginTx() ) {
+            ResourceIterable<String> propertyKeys = GlobalGraphOperations.at(graphDb).getAllPropertyKeys();
+            for ( String propertyKey : propertyKeys ) {
+                System.out.println(propertyKey);
+            }
+ 
+            assertThat(propertyKeys, contains("artifactName","identifier","language","type", "dependencyIdentifiers"));
         }
     }
 
