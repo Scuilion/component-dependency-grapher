@@ -1,3 +1,15 @@
+apply plugin: 'maven'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath group: 'com.scuilion.gradle', name: 'utils', version: '0.+'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 
@@ -46,6 +58,6 @@ task functionalTest(type:Test){
 
     getReports().getHtml().setDestination(new File("$project.reporting.baseDir", 'functional'))
     getReports().getJunitXml().setDestination(new File("$project.buildDir", 'functional-results')) 
-
-
 }
+
+apply plugin: 'utils'
